@@ -1,0 +1,27 @@
+.issue-card {
+   box-sizing: border-box;
+   background: white;
+   display: flex;
+   padding: 5px;
+   margin: 5px;
+   border: 1px solid black;
+   height: 60px;
+   align-items: left;
+   justify-content: space-between;
+   flex-direction: column;
+   
+   .issue-title {
+      font-size: 1.2rem;
+   }
+   .issue-status {
+      &.status-open {
+         background: lightblue;
+      }
+      &.status-pending {
+         background: yellow;
+      }
+      &.status-closed {
+         background: green;
+      }
+   }
+}

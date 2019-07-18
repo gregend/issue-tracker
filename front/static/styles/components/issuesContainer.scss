@@ -1,0 +1,14 @@
+.issues-list {
+   background: lavender;
+   margin: 0 5px;
+   height: 90vh;
+}
+.issues-list-title {
+   text-transform: capitalize;
+   
+   padding: 3px;
+}
+.issues-container {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr)
+}
