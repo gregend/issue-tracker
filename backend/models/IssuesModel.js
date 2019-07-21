@@ -66,8 +66,8 @@ const IssuesModel = database => {
    const getAllIssues = () => {
       const issues = database.issues;
       return Object.keys(issues).reduce((acc, id) => {
-         const { title, status } = issues[id];
-         return { ...acc, [id]: { id, title, status } };
+         const { title, status, description } = issues[id];
+         return { ...acc, [id]: { id, title, status, description } };
       }, {})
    };
 

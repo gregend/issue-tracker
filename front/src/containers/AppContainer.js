@@ -1,74 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useReducer } from 'react';
 import { getAllIssues, createIssue, updateIssue } from '../api/issues';
-import IssuesList from './IssuesList';
 import '../../static/styles/components/issuesContainer.scss';
+import IssuesContainer from './IssuesContainer';
+import IssuesReducer, { ActionTypes } from '../reducers/IssuesReducer';
+import IssueDetail from '../components/IssueDetail';
 
-const categorizeIssues = issues => {
-   return Object.values(issues).reduce((acc, issue) => {
-      const { status } = issue;
-      acc[status.toLowerCase()].push(issue);
-      return acc;
-   }, {
-      open: [],
-      pending: [],
-      closed: []
-   });
-};
-
-const useOnMount = (setStatus, setIssues) => {
+const useOnMount = (dispatch) => {
    useEffect(() => {
       (async () => {
-         setStatus('PENDING');
+         dispatch({ type: ActionTypes.FETCH_ISSUES });
          const issues = await getAllIssues();
-         setIssues(issues);
-         setStatus('SUCCESS');
+         dispatch({ type: ActionTypes.FETCH_ISSUES_SUCCESS, payload: { issues } });
       })()
    }, []);
 };
 
-const AppContainer = ({ }) => {
-   const [issues, setIssues] = useState({});
-   const [status, setStatus] = useState('NOT_PENDING');
+const onIssueUpdate = dispatch => async (issueData) => {
+   const { id, data } = await updateIssue(issueData);
+   dispatch({ type: ActionTypes.UPDATE_ISSUE, payload: { id, data } });
+};
 
-   const onIssueClick = async id => {
-      const currentIssue = issues[id];
-      const newStatus = currentIssue.status === 'OPEN' ? 'PENDING' : 'CLOSED';
-      const { data } = await updateIssue(Object.assign(currentIssue, { status: newStatus }));
-      const { title, status } = data;
-      const updatedIssue = { id, title, status };
-      console.log(updatedIssue);
-      setIssues({
-         ...issues,
-         [id]: updatedIssue
-      });
+const AppContainer = () => {
+   const [state, dispatch] = useReducer(IssuesReducer.reducer, IssuesReducer.initialState);
+
+   const onIssueClick = dispatch => id => {
+      dispatch({ type: ActionTypes.SET_DETAIL, payload: { id }});
    };
-   useOnMount(setStatus, setIssues);
-   const categorizedIssues = categorizeIssues(issues);
-
+   const onCreateNewClick = dispatch => async ({ title, description }) => {
+      const { id, data } = await createIssue(title, description);
+      dispatch({ type: ActionTypes.CREATE_ISSUE, payload: { id, data } });
+   };
+   useOnMount(dispatch);
    return <div className="app-container">
-      <Loader status={status} />
-      <div className="issues-container">
-         {Object.keys(categorizedIssues).map((category) => {
-            return <IssuesList
-               key={category}
-               title={category}
-               issues={Object.values(categorizedIssues[category])} 
-               onIssueClick={onIssueClick} />
-         })}
+      <div className="nav-bar">
+         <div className="button" onClick={onCreateNewClick(dispatch)}>Add new</div>
       </div>
-   </div>
+      <div className="issues">
+         <IssuesContainer
+            issues={state.issues}
+            onIssueClick={onIssueClick(dispatch)} />
+         <IssueDetail issue={state.detail} onDetailUpdate={onIssueUpdate(dispatch)} />
+      </div>
+   </div>;
 };
 AppContainer.displayName = 'AppContainer';
 export default AppContainer;
-
-const Loader = ({ status }) => {
-   switch (status) {
-      case 'NOT_PENDING':
-         return <div>:)</div>
-      case 'PENDING':
-         return <div>Loading...</div>
-      case 'SUCCESS':
-         return <div>Loaded</div>
-   }
-}

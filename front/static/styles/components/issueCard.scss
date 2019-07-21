@@ -9,7 +9,10 @@
    align-items: left;
    justify-content: space-between;
    flex-direction: column;
-   
+   &:hover {
+      background: grey;
+   }
+   cursor: pointer;
    .issue-title {
       font-size: 1.2rem;
    }

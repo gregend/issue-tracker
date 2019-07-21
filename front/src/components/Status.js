@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-const statuses = ['OPEN', 'PENDING', 'DONE'];
+import { IssueStatusesPropTypes } from '../constants/customPropTypes';
 
 const Status = ({ status, customClass }) => {
    const className = `status-${status.toLowerCase()} ${customClass}`;
@@ -8,9 +8,10 @@ const Status = ({ status, customClass }) => {
 };
 
 Status.displayName = 'Status';
-const { oneOf } = PropTypes;
+const { string } = PropTypes;
 Status.propTypes = {
-   status: oneOf(statuses)
+   status: IssueStatusesPropTypes,
+   customClass: string
 };
 
 export default Status;

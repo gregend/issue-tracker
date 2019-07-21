@@ -12,3 +12,51 @@
    display: grid;
    grid-template-columns: repeat(3, 1fr)
 }
+.issues {
+   display: grid;
+   grid-template-columns: 75% 1fr;
+}
+.issue-detail {
+   padding: 5px;
+   .issue-title {
+      font-size: 1.5rem;
+      border: 0px;
+      background: whitesmoke
+   }
+   .issue-description {
+      box-sizing: border-box;
+      margin: 5px 0;
+      border: 0px;
+      background: whitesmoke
+   }
+   .issue-update {
+      text-align: right;
+      cursor: pointer;
+   }
+}
+.supa-input {
+   resize: none;
+   outline: none;
+   width: 100%;
+   border: none;
+}
+.supa-textarea {
+   resize: none;
+   outline: none;
+   width: 100%;
+   border: none;
+}
+.nav-bar {
+   display: flex;
+   flex-direction: row;
+   background: lavender;
+   height: 20px;
+   margin: 5px;
+   padding: 3px;
+   .button {
+      cursor: pointer;
+      &:hover {
+         color: grey;
+      }
+   }
+}

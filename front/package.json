@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "dev": "webpack-dev-server --config ./config/webpack/webpack.config.js",
-    "build": "webpack --config ./config/webpack/webpack.config.js"
+    "build": "webpack --config ./config/webpack/webpack.config.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": "Grzegorz Basta",
   "license": "MIT",

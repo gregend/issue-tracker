@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Status from './Status';
 import '../../static/styles/components/issueCard.scss';
+import { IssueStatusesPropTypes } from '../constants/customPropTypes';
 const IssueCard = ({ id, title, status, onClick }) => {
    return <div className="issue-card" onClick={() => onClick(id)}>
       <div className="issue-title">{title}</div>
@@ -19,7 +20,7 @@ IssueCard.defaultProps = {
 IssueCard.propTypes = {
    id: string,
    title: string,
-   status: Status.propTypes,
+   status: IssueStatusesPropTypes,
    onClick: func
 };
 export default React.memo(IssueCard);
